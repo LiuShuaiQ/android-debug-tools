@@ -13,6 +13,7 @@ public class ShellProxy {
     return Single.create((SingleOnSubscribe<String>) emitter -> {
       try {
         Process p = Runtime.getRuntime().exec(cmd);
+        p.waitFor();
         StringBuffer result = new StringBuffer();
         InputStream is = p.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -20,7 +21,6 @@ public class ShellProxy {
         while ((line = reader.readLine()) != null) {
           result.append(line + "\n");
         }
-        p.waitFor();
         is.close();
         reader.close();
         p.destroy();

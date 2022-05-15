@@ -14,4 +14,20 @@
     android:layout_marginRight="10dp"
     android:text="Terminal" />
 
+  <Button
+    android:id="@+id/btn_open_wifi_debug"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:text="Open Wifi Debug (need root)" />
+
+  <Button
+    android:id="@+id/btn_network_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:text="Network Info" />
+
 </LinearLayout>

@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import cn.lem.nicetools.password.android_debug_tools.util.KeyboardUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -33,15 +35,22 @@ public class TerminalActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(cmd.trim())) {
           appendLogText("$: ");
         } else {
+          mEtCmd.setVisibility(View.INVISIBLE);
           ShellProxy.exec(cmd)
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(s -> {
                 Log.e(TAG, "执行命令成功--> " + s);
                 appendLogText("$: " + s);
+                mEtCmd.setVisibility(View.VISIBLE);
+                KeyboardUtil.reqFocusInEditText(mEtCmd);
+                KeyboardUtil.showKeyboard(TerminalActivity.this, mEtCmd);
               }, throwable -> {
                 Log.e(TAG, "执行命令失败--> " + throwable);
                 appendLogText("$: " + "Error: " + throwable.getMessage());
+                mEtCmd.setVisibility(View.VISIBLE);
+                KeyboardUtil.reqFocusInEditText(mEtCmd);
+                KeyboardUtil.showKeyboard(TerminalActivity.this, mEtCmd);
               });
         }
         mEtCmd.setText("");
